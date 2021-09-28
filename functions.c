@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "my_functions.h"
+#include "structure.h"
 
 print_error(int error_code)
 {
@@ -76,4 +77,69 @@ int read_line(int fd, char *buffer)
   }
 
   return ret_val;
+}
+
+
+/* third task */
+int add_person(char *name, char *father, char *mother, forest* data_structure)
+{
+  forest* f = data_structure;
+  int found = 0;
+
+  while (found == 0)
+  {
+    tree* t = f->tree;
+    if (t == NULL) break;
+    while (found == 0)
+    {
+      branch* b = t->branch;
+      if (b == NULL) break;
+      while (found == 0)
+      {
+        if (strcmp(b->name, name) == 0)
+        {
+          branch *newOlderB = NULL;
+          if (father != NULL)
+            newOlderB = initBranch(father);
+          if (mother != NULL)
+          {
+            if (newOlderB == NULL)
+              newOlderB = initBranch(mother);
+            else
+              addToBranch(newOlderB, mother);
+          }
+          addToTree(t, newOlderB);
+          found = 1;
+          break;
+        }
+        if (b->next == NULL) break;
+        b = b->next;
+      }
+
+      if (t->next == NULL) break;
+      t = t->next;
+    }
+    if (f->next == NULL) break;
+    f = f->next;
+  }
+
+  if (found == 0)
+  {
+    branch* newB = initBranch(name);
+
+    tree* newT = initTree(newB);
+
+    branch* newOlderB = NULL;
+    if (father != NULL) newOlderB = initBranch(father);
+    if (mother != NULL)
+    {
+      if (newOlderB == NULL) newOlderB = initBranch(mother);
+      else addToBranch(newOlderB, mother);
+    }
+
+    if (newOlderB != NULL) addToTree(newT, newOlderB);
+
+    addToForest(data_structure, newT);
+  }
+  return 0;
 }
