@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.sample": "NGINX",
+    "default": "NGINX",
+    "typeinfo": "c"
+  }
+}
