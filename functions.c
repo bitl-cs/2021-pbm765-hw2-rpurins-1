@@ -203,5 +203,29 @@ int read_persons(int fd, forest* data_structure)
       if (strlen(p_name) != 0)
       {
         add_person_status = add_person(p_name, (str_length(p_father) == 0) ? NULL : p_father, (str_length(p_mother) == 0) ? NULL : p_mother, data_structure);
-        if (add_person_status < 0) return add_person_status; /* This would mean that there is a add person error */
+        if (add_person_status < 0) return add_person_status; /* If this returns then there is an add person error */
       }
+      strcpy(p_name, line_data);
+      clearStr(p_mother);
+      clearStr(p_father);
+    }
+    else if (status == 1) /* This is a mother */
+    {
+      if (str_length(p_name) == 0) return -3; /* If there is no name for parent */
+      if (str_length(p_mother) != 0) return -4; /* If parents of the same gender */
+      str_copy(line_data, p_mother);
+    }
+    else if (status == 2) /* FATHER */
+    {
+      if (str_length(p_name) == 0) return -3; /* If there is no name for parent */
+      if (str_length(p_father) != 0) return -4; /* If parents of the same gender */
+      str_copy(line_data, p_father);
+    }
+
+    if (status == -1) break; /* end of file */
+    if (status > 2) return -5; /* literally anything other that is not good */
+
+  }
+
+  return ret_val;
+}
