@@ -176,3 +176,32 @@ int print_persons(int fd, forest* data_structure)
   }
   return 0;
 }
+
+
+/* fifth task */
+int read_persons(int fd, forest* data_structure)
+{
+  int ret_val = 0;
+  int status;
+  char line_data[256];
+
+  int add_person_status = 0;
+
+  char p_name[256];
+  p_name[0] = '\0';
+  char p_mother[256];
+  p_mother[0] = '\0';
+  char p_father[256];
+  p_father[0] = '\0';
+
+  while (1)
+  {
+    status = read_line(fd, line_data);
+    if (status < -1) return status; /* This would mean that there is some read_line error */
+    if (status == 0 || status == -1)
+    {
+      if (strlen(p_name) != 0)
+      {
+        add_person_status = add_person(p_name, (str_length(p_father) == 0) ? NULL : p_father, (str_length(p_mother) == 0) ? NULL : p_mother, data_structure);
+        if (add_person_status < 0) return add_person_status; /* This would mean that there is a add person error */
+      }
