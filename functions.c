@@ -143,3 +143,36 @@ int add_person(char *name, char *father, char *mother, forest* data_structure)
   }
   return 0;
 }
+
+
+/* fourth task */
+int print_persons(int fd, forest* data_structure)
+{
+  if (data_structure == NULL) return -6; /* TBA */
+  forest* currFor = data_structure;
+  while (currFor->next != NULL) currFor = currFor->next;
+  while (1)
+  {
+    tree* currTree = currFor->tree;
+    if (currTree == NULL) break;
+    while (currTree->next != NULL) currTree = currTree->next;
+    while (1)
+    {
+      branch* currBranch = currTree->branch;
+      if (currBranch == NULL) break;
+      while (1)
+      {
+        printf("%s\n", currBranch->name);
+        if (currBranch->next == NULL) break;
+        currBranch = currBranch->next;
+      }
+      if (currTree->prev == NULL) break;
+      currTree = currTree->prev;
+    }
+    if (currFor->prev == NULL) break;
+    currFor = currFor->prev;
+    if (currFor->prev == NULL) break;
+    printf("\n");
+  }
+  return 0;
+}
